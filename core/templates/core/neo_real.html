@@ -91,6 +91,11 @@
   <h2>⎇ REVELANDO ROSTRO / SINTONÍA DIGITAL</h2>
 
   <div id="controls">
+    <div class="control">
+      <label>Video URL</label>
+      <input id="videoUrlInput" type="text" value="https://archive.org/download/house_on_haunted_hill_ipod/house_on_haunted_hill_512kb.mp4" style="width: 300px;">
+      <button onclick="updateVideoUrl()">Cargar video</button>
+    </div>
     <!-- Sliders + random checkboxes -->
     <div class="control">
       <label>Ancho</label>
@@ -146,7 +151,8 @@
     </div>
   </div>
 
-  <canvas id="source"></canvas>
+  <canvas id="source" style="display: block; margin-top: 1rem; border: 1px solid var(--text-color); background-color: rgba(255, 255, 255, 0.02);"></canvas>
+  <video id="sourceVideo" src="https://archive.org/download/house_on_haunted_hill_ipod/house_on_haunted_hill_512kb.mp4" crossorigin="anonymous" loop muted autoplay style="display: none;"></video>
   <pre id="ascii"></pre>
 
   <script>
@@ -179,7 +185,7 @@
 
     const img = new Image();
     img.crossOrigin = "anonymous";
-    img.src = "https://http2.mlstatic.com/D_NQ_NP_826393-MLA78768180786_092024-O.webp";
+    img.src = "https://www.revistagente.com/wp-content/uploads/2019/09/GENTE-Keanu-Reeves1-20-08-2019.jpg.webp";
 
     const themes = {
       matrix: { "--bg-color": "black", "--text-color": "#0f0", "--glitch-color": "#0f0" },
@@ -193,6 +199,7 @@
     }
 
     function render() {
+      const video = get("sourceVideo");
       const width = parseInt(sliders.width.value);
       const scaleY = parseFloat(sliders.scaleY.value);
       const glitchChance = parseFloat(sliders.glitch.value);
@@ -202,7 +209,7 @@
       let chars = charsetSelect.value;
       if (invertCheckbox.checked) chars = chars.split('').reverse().join('');
 
-      const height = Math.floor(img.height * (width / img.width) * scaleY);
+      const height = Math.floor(video.videoHeight * (width / video.videoWidth) * scaleY);
       canvas.width = width;
       canvas.height = height;
 
@@ -210,7 +217,7 @@
       ascii.style.lineHeight = fontSize + "px";
       ascii.classList.toggle("shadow", shadowCheckbox.checked);
 
-      ctx.drawImage(img, 0, 0, width, height);
+      ctx.drawImage(video, 0, 0, width, height);
       const imageData = ctx.getImageData(0, 0, width, height);
       let asciiImage = '';
 
@@ -249,17 +256,26 @@
       render();
     }
 
-    img.onload = () => {
-      applyTheme("matrix");
+    get("sourceVideo").addEventListener("play", function loop() {
       render();
-      setInterval(tickRandom, 3000);
-    };
+      requestAnimationFrame(loop);
+    });
+
+    applyTheme("matrix");
+    setInterval(tickRandom, 3000);
 
     [...Object.values(sliders), charsetSelect, invertCheckbox, shadowCheckbox, themeSelect]
       .forEach(el => el.addEventListener("input", () => {
         if (el === themeSelect) applyTheme(el.value);
         render();
       }));
-  </script>
+    function updateVideoUrl() {
+    const url = get('videoUrlInput').value;
+    const video = get('sourceVideo');
+    video.src = "https://www.w3schools.com/html/mov_bbb.mp4";
+    video.load();
+    video.play();
+  }
+</script>
 </body>
 </html>
