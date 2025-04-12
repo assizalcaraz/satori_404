@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>/neo_real [lab++]</title>
+  <style>
+    :root {
+      --bg-color: black;
+      --text-color: #0f0;
+      --glitch-color: #0f0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: monospace;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      text-shadow: 0 0 6px var(--text-color);
+    }
+
+    #ascii {
+      white-space: pre;
+      font-size: 9px;
+      line-height: 9px;
+      padding: 1rem;
+      text-shadow: 0 0 5px var(--text-color);
+      animation: flicker 3s infinite ease-in-out alternate;
+      transition: all 0.3s ease-in-out;
+      overflow-x: auto;
+      max-width: 100%;
+    }
+
+    .shadow {
+      text-shadow: 2px 2px var(--glitch-color), -1px -1px var(--text-color);
+    }
+
+    #controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .control {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text-color);
+      font-size: 0.8rem;
+    }
+
+    input[type=range], select {
+      width: 120px;
+      margin-top: 4px;
+    }
+
+    .random-check {
+      margin-top: 4px;
+      font-size: 0.7rem;
+    }
+
+    canvas {
+      display: none;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes glitch {
+      0% { filter: none; }
+      30% { filter: hue-rotate(20deg) blur(0.5px); }
+      70% { filter: contrast(150%) brightness(120%); }
+      100% { filter: none; }
+    }
+  </style>
+</head>
+<body>
+  <h2>⎇ REVELANDO ROSTRO / SINTONÍA DIGITAL</h2>
+
+  <div id="controls">
+    <!-- Sliders + random checkboxes -->
+    <div class="control">
+      <label>Ancho</label>
+      <input id="widthSlider" type="range" min="50" max="200" value="100">
+      <label class="random-check"><input type="checkbox" id="widthRandom"> random</label>
+    </div>
+    <div class="control">
+      <label>Escala Y</label>
+      <input id="scaleYSlider" type="range" min="0.3" max="1" step="0.05" value="0.55">
+      <label class="random-check"><input type="checkbox" id="scaleYRandom"> random</label>
+    </div>
+    <div class="control">
+      <label>Fuente</label>
+      <input id="fontSizeSlider" type="range" min="6" max="16" value="9">
+      <label class="random-check"><input type="checkbox" id="fontSizeRandom"> random</label>
+    </div>
+    <div class="control">
+      <label>Glitch %</label>
+      <input id="glitchSlider" type="range" min="0" max="0.1" step="0.005" value="0.01">
+      <label class="random-check"><input type="checkbox" id="glitchRandom"> random</label>
+    </div>
+    <div class="control">
+      <label>Contraste</label>
+      <input id="contrastSlider" type="range" min="0.5" max="2" step="0.1" value="1">
+      <label class="random-check"><input type="checkbox" id="contrastRandom"> random</label>
+    </div>
+    <div class="control">
+      <label>Brillo</label>
+      <input id="brightnessSlider" type="range" min="-100" max="100" step="10" value="0">
+      <label class="random-check"><input type="checkbox" id="brightnessRandom"> random</label>
+    </div>
+
+    <!-- Extras -->
+    <div class="control">
+      <label>Charset</label>
+      <select id="charsetSelect">
+        <option value="@#W$9876543210?!abc;:+=-,._ ">Clásico</option>
+        <option value="$@B%8&WM#*oahkbdpqwmZO0QL">Denso</option>
+        <option value=" .:-=+*#%@">Minimal</option>
+        <option value="0123456789">Numérico</option>
+        <option value="☯☠★✦✧">Símbolos</option>
+      </select>
+    </div>
+    <div class="control"><label>Invertir</label><input id="invertCheckbox" type="checkbox"></div>
+    <div class="control"><label>Sombra</label><input id="shadowCheckbox" type="checkbox"></div>
+    <div class="control">
+      <label>Tema</label>
+      <select id="themeSelect">
+        <option value="matrix">Matrix</option>
+        <option value="blue">Blue</option>
+        <option value="pink">Pink</option>
+      </select>
+    </div>
+  </div>
+
+  <canvas id="source"></canvas>
+  <pre id="ascii"></pre>
+
+  <script>
+    const get = id => document.getElementById(id);
+
+    const paramDefs = {
+      width: { min: 50, max: 200 },
+      scaleY: { min: 0.3, max: 1, step: 0.05 },
+      fontSize: { min: 6, max: 16 },
+      glitch: { min: 0, max: 0.1, step: 0.005 },
+      contrast: { min: 0.5, max: 2, step: 0.1 },
+      brightness: { min: -100, max: 100, step: 10 }
+    };
+
+    const sliders = {};
+    const randomFlags = {};
+    for (const param in paramDefs) {
+      sliders[param] = get(`${param}Slider`);
+      randomFlags[param] = get(`${param}Random`);
+    }
+
+    const charsetSelect = get("charsetSelect");
+    const invertCheckbox = get("invertCheckbox");
+    const shadowCheckbox = get("shadowCheckbox");
+    const themeSelect = get("themeSelect");
+
+    const ascii = get('ascii');
+    const canvas = get('source');
+    const ctx = canvas.getContext('2d');
+
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = "https://http2.mlstatic.com/D_NQ_NP_826393-MLA78768180786_092024-O.webp";
+
+    const themes = {
+      matrix: { "--bg-color": "black", "--text-color": "#0f0", "--glitch-color": "#0f0" },
+      blue: { "--bg-color": "#000018", "--text-color": "#00f0ff", "--glitch-color": "#33ffff" },
+      pink: { "--bg-color": "#180018", "--text-color": "#ff00cc", "--glitch-color": "#ff66ff" }
+    };
+
+    function applyTheme(theme) {
+      const vars = themes[theme];
+      for (let k in vars) document.documentElement.style.setProperty(k, vars[k]);
+    }
+
+    function render() {
+      const width = parseInt(sliders.width.value);
+      const scaleY = parseFloat(sliders.scaleY.value);
+      const glitchChance = parseFloat(sliders.glitch.value);
+      const fontSize = parseInt(sliders.fontSize.value);
+      const contrast = parseFloat(sliders.contrast.value);
+      const brightness = parseInt(sliders.brightness.value);
+      let chars = charsetSelect.value;
+      if (invertCheckbox.checked) chars = chars.split('').reverse().join('');
+
+      const height = Math.floor(img.height * (width / img.width) * scaleY);
+      canvas.width = width;
+      canvas.height = height;
+
+      ascii.style.fontSize = fontSize + "px";
+      ascii.style.lineHeight = fontSize + "px";
+      ascii.classList.toggle("shadow", shadowCheckbox.checked);
+
+      ctx.drawImage(img, 0, 0, width, height);
+      const imageData = ctx.getImageData(0, 0, width, height);
+      let asciiImage = '';
+
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const offset = (y * width + x) * 4;
+          const r = imageData.data[offset];
+          const g = imageData.data[offset + 1];
+          const b = imageData.data[offset + 2];
+          let avg = (r + g + b) / 3;
+          avg = Math.min(255, Math.max(0, (avg + brightness) * contrast));
+          const charIndex = Math.floor((avg / 255) * (chars.length - 1));
+          asciiImage += chars[charIndex];
+        }
+        asciiImage += '\n';
+      }
+
+      const glitchChars = asciiImage.split('');
+      ascii.innerHTML = glitchChars.map((char) => {
+        const glitch = Math.random() < glitchChance;
+        if (glitch && char.trim()) {
+          return `<span style="animation: glitch 0.3s infinite;">${char}</span>`;
+        }
+        return char === '\n' ? '<br>' : char;
+      }).join('');
+    }
+
+    function tickRandom() {
+      for (const param in paramDefs) {
+        if (randomFlags[param].checked) {
+          const def = paramDefs[param];
+          const val = (Math.random() * (def.max - def.min)) + def.min;
+          sliders[param].value = def.step ? val.toFixed(2) : Math.round(val);
+        }
+      }
+      render();
+    }
+
+    img.onload = () => {
+      applyTheme("matrix");
+      render();
+      setInterval(tickRandom, 3000);
+    };
+
+    [...Object.values(sliders), charsetSelect, invertCheckbox, shadowCheckbox, themeSelect]
+      .forEach(el => el.addEventListener("input", () => {
+        if (el === themeSelect) applyTheme(el.value);
+        render();
+      }));
+  </script>
+</body>
+</html>

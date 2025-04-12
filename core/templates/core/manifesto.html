@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Satori404</title>
+  <style>
+    body {
+      background: #000;
+      color: #0f0;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+    }
+
+    .typewriter {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 1.2em;
+      max-width: 80vw;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: .15em solid #0f0;
+      animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink-caret {
+      0%, 100% { border-color: transparent }
+      50% { border-color: #0f0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="typewriter">{{ koan }}</div>
+</body>
+</html>
