@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>/neo_real [lab++]</title>
+  <title>/Morfeo Video Club</title>
   <style>
     :root {
       --bg-color: black;
@@ -88,13 +88,10 @@
   </style>
 </head>
 <body>
-  <h2>⎇ REVELANDO ROSTRO / SINTONÍA DIGITAL</h2>
+  <h1>⎇ MORFEO VIDEO CLUB</h1>
 
   <div id="controls">
     <div class="control">
-      <label>Video URL</label>
-      <input id="videoUrlInput" type="text" value="https://archive.org/download/house_on_haunted_hill_ipod/house_on_haunted_hill_512kb.mp4" style="width: 300px;">
-      <button onclick="updateVideoUrl()">Cargar video</button>
     </div>
     <!-- Sliders + random checkboxes -->
     <div class="control">
@@ -151,82 +148,53 @@
     </div>
   </div>
 
-  <canvas id="source" style="display: block; margin-top: 1rem; border: 1px solid var(--text-color); background-color: rgba(255, 255, 255, 0.02);"></canvas>
-  <video id="sourceVideo" src="https://archive.org/download/house_on_haunted_hill_ipod/house_on_haunted_hill_512kb.mp4" crossorigin="anonymous" loop muted autoplay style="display: none;"></video>
+  <canvas id="source" style="display: none; margin-top: 1rem; border: 1px solid var(--text-color); background-color: rgba(255, 255, 255, 0.02);"></canvas>
   <pre id="ascii"></pre>
 
   <script>
-    const get = id => document.getElementById(id);
-
-    const paramDefs = {
-      width: { min: 50, max: 200 },
-      scaleY: { min: 0.3, max: 1, step: 0.05 },
-      fontSize: { min: 6, max: 16 },
-      glitch: { min: 0, max: 0.1, step: 0.005 },
-      contrast: { min: 0.5, max: 2, step: 0.1 },
-      brightness: { min: -100, max: 100, step: 10 }
-    };
-
-    const sliders = {};
-    const randomFlags = {};
-    for (const param in paramDefs) {
-      sliders[param] = get(`${param}Slider`);
-      randomFlags[param] = get(`${param}Random`);
-    }
-
-    const charsetSelect = get("charsetSelect");
-    const invertCheckbox = get("invertCheckbox");
-    const shadowCheckbox = get("shadowCheckbox");
-    const themeSelect = get("themeSelect");
-
-    const ascii = get('ascii');
-    const canvas = get('source');
+    const video = document.createElement('video');
+    video.src = "http://localhost:8080/videos/video.mp4";
+    video.crossOrigin = "anonymous";
+    video.autoplay = true;
+    video.loop = true;
+    video.muted = true;
+    video.play();
+  
+    const canvas = document.getElementById('source');
     const ctx = canvas.getContext('2d');
-
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = "https://www.revistagente.com/wp-content/uploads/2019/09/GENTE-Keanu-Reeves1-20-08-2019.jpg.webp";
-
-    const themes = {
-      matrix: { "--bg-color": "black", "--text-color": "#0f0", "--glitch-color": "#0f0" },
-      blue: { "--bg-color": "#000018", "--text-color": "#00f0ff", "--glitch-color": "#33ffff" },
-      pink: { "--bg-color": "#180018", "--text-color": "#ff00cc", "--glitch-color": "#ff66ff" }
-    };
-
-    function applyTheme(theme) {
-      const vars = themes[theme];
-      for (let k in vars) document.documentElement.style.setProperty(k, vars[k]);
-    }
-
-    function render() {
-      const video = get("sourceVideo");
-      const width = parseInt(sliders.width.value);
-      const scaleY = parseFloat(sliders.scaleY.value);
-      const glitchChance = parseFloat(sliders.glitch.value);
-      const fontSize = parseInt(sliders.fontSize.value);
-      const contrast = parseFloat(sliders.contrast.value);
-      const brightness = parseInt(sliders.brightness.value);
-      let chars = charsetSelect.value;
-      if (invertCheckbox.checked) chars = chars.split('').reverse().join('');
-
-      const height = Math.floor(video.videoHeight * (width / video.videoWidth) * scaleY);
-      canvas.width = width;
-      canvas.height = height;
-
+    const ascii = document.getElementById('ascii');
+  
+    function renderFrameToAscii() {
+      const width = parseInt(document.getElementById('widthSlider').value) || 100;
+      const scaleY = parseFloat(document.getElementById('scaleYSlider').value) || 0.55;
+      const glitchChance = parseFloat(document.getElementById('glitchSlider').value) || 0.01;
+      const contrast = parseFloat(document.getElementById('contrastSlider').value) || 1;
+      const brightness = parseInt(document.getElementById('brightnessSlider').value) || 0;
+      let chars = document.getElementById("charsetSelect").value;
+      if (document.getElementById("invertCheckbox").checked) {
+        chars = chars.split('').reverse().join('');
+      }
+  
+      const fontSize = parseInt(document.getElementById('fontSizeSlider').value) || 9;
       ascii.style.fontSize = fontSize + "px";
       ascii.style.lineHeight = fontSize + "px";
-      ascii.classList.toggle("shadow", shadowCheckbox.checked);
-
-      ctx.drawImage(video, 0, 0, width, height);
-      const imageData = ctx.getImageData(0, 0, width, height);
+      ascii.classList.toggle("shadow", document.getElementById("shadowCheckbox").checked);
+  
+      const w = width;
+      const h = Math.floor(video.videoHeight * (w / video.videoWidth) * scaleY);
+      canvas.width = w;
+      canvas.height = h;
+  
+      ctx.drawImage(video, 0, 0, w, h);
+      const imageData = ctx.getImageData(0, 0, w, h);
+  
       let asciiImage = '';
-
-      for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-          const offset = (y * width + x) * 4;
-          const r = imageData.data[offset];
-          const g = imageData.data[offset + 1];
-          const b = imageData.data[offset + 2];
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          const offset = (y * w + x) * 4;
+          let r = imageData.data[offset];
+          let g = imageData.data[offset + 1];
+          let b = imageData.data[offset + 2];
           let avg = (r + g + b) / 3;
           avg = Math.min(255, Math.max(0, (avg + brightness) * contrast));
           const charIndex = Math.floor((avg / 255) * (chars.length - 1));
@@ -234,48 +202,23 @@
         }
         asciiImage += '\n';
       }
-
-      const glitchChars = asciiImage.split('');
-      ascii.innerHTML = glitchChars.map((char) => {
-        const glitch = Math.random() < glitchChance;
-        if (glitch && char.trim()) {
-          return `<span style="animation: glitch 0.3s infinite;">${char}</span>`;
-        }
-        return char === '\n' ? '<br>' : char;
-      }).join('');
+  
+      ascii.innerHTML = asciiImage
+        .split('').map(char => {
+          const glitch = Math.random() < glitchChance;
+          if (glitch && char.trim()) {
+            return `<span style="animation: glitch 0.3s infinite;">${char}</span>`;
+          }
+          return char === '\n' ? '<br>' : char;
+        }).join('');
+  
+      requestAnimationFrame(renderFrameToAscii);
     }
-
-    function tickRandom() {
-      for (const param in paramDefs) {
-        if (randomFlags[param].checked) {
-          const def = paramDefs[param];
-          const val = (Math.random() * (def.max - def.min)) + def.min;
-          sliders[param].value = def.step ? val.toFixed(2) : Math.round(val);
-        }
-      }
-      render();
-    }
-
-    get("sourceVideo").addEventListener("play", function loop() {
-      render();
-      requestAnimationFrame(loop);
+  
+    video.addEventListener('play', () => {
+      requestAnimationFrame(renderFrameToAscii);
     });
-
-    applyTheme("matrix");
-    setInterval(tickRandom, 3000);
-
-    [...Object.values(sliders), charsetSelect, invertCheckbox, shadowCheckbox, themeSelect]
-      .forEach(el => el.addEventListener("input", () => {
-        if (el === themeSelect) applyTheme(el.value);
-        render();
-      }));
-    function updateVideoUrl() {
-    const url = get('videoUrlInput').value;
-    const video = get('sourceVideo');
-    video.src = "https://www.w3schools.com/html/mov_bbb.mp4";
-    video.load();
-    video.play();
-  }
-</script>
+  </script>
+  
 </body>
 </html>
