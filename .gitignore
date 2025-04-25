@@ -1,0 +1,6 @@
+.env
+/video_server/videos
+.DS_Store
+.treeignore
+core/__pycache__/
+*.sqlite3

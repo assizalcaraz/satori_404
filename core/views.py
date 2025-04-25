@@ -14,14 +14,8 @@ def manifesto_view(request):
         koan = f"⚠️ Error cargando el manifiesto: {e}"
     return render(request, 'core/manifesto.html', {'koan': koan})
 
-def neo_view(request):
-    return render(request, 'core/neo.html')
-
-def neo_talking_view(request):
-    return render(request, 'core/neo_talking.html')
-    
-def neo_real_view(request):
-    return render(request, 'core/neo_real.html')
-
 def index_view(request):
     return render(request, 'core/index.html')
+
+def ascii_view(request):
+    return render(request, 'core/ascii.html')

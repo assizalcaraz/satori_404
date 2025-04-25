@@ -1,0 +1,77 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}ASCII Morfeo{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/ascii.css' %}">
+  <script defer src="{% static 'js/ascii.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<main>
+  <h1>⎇ ASCII MORFEO</h1>
+
+  <div id="ascii-container">
+    <div id="ascii-column">
+      <pre id="ascii"></pre>
+    </div>
+
+    <div id="controls-column">
+      <div style="display: none;" class="control">
+        <label>Ancho</label>
+        <input id="widthSlider" type="range" min="50" max="200" value="100">
+        <label class="random-check"><input type="checkbox" id="widthRandom"> random</label>
+      </div>
+      <div class="control">
+        <label>Escala Y</label>
+        <input id="scaleYSlider" type="range" min="0.3" max="1" step="0.05" value="0.55">
+        <label class="random-check"><input type="checkbox" id="scaleYRandom"> random</label>
+      </div>
+      <div style="display: none;" class="control">
+        <label>Fuente</label>
+        <input id="fontSizeSlider" type="range" min="6" max="16" value="9">
+        <label class="random-check"><input type="checkbox" id="fontSizeRandom"> random</label>
+      </div>
+      <div class="control">
+        <label>Glitch %</label>
+        <input id="glitchSlider" type="range" min="0" max="0.1" step="0.005" value="0.01">
+        <label class="random-check"><input type="checkbox" id="glitchRandom" checked> random</label>
+      </div>
+      <div class="control">
+        <label>Contraste</label>
+        <input id="contrastSlider" type="range" min="0.5" max="2" step="0.1" value="1">
+        <label class="random-check"><input type="checkbox" id="contrastRandom" checked> random</label>
+      </div>
+      <div class="control">
+        <label>Brillo</label>
+        <input id="brightnessSlider" type="range" min="-100" max="100" step="10" value="0">
+        <label class="random-check"><input type="checkbox" id="brightnessRandom" checked> random</label>
+      </div>
+      <div class="control">
+        <label>Charset</label>
+        <select id="charsetSelect">
+          <option value=" .:-=+*#%@">Minimal</option>
+          <option value="@#W$9876543210?!abc;:+=-,._ ">Clásico</option>
+          <option value="$@B%8&WM#*oahkbdpqwmZO0QL">Denso</option>
+          <option value="0123456789">Numérico</option>
+          <option value="☯☠★✦✧">Símbolos</option>
+        </select>
+      </div>
+      <div class="control"><label>Invertir</label><input id="invertCheckbox" type="checkbox"></div>
+      <div class="control"><label>Sombra</label><input id="shadowCheckbox" type="checkbox"></div>
+    </div>
+  </div>
+
+  <canvas id="source" style="display: none;"></canvas>
+
+  <div class="buttons">
+    <button onclick="playVideos()">▶️ Play</button>
+    <button onclick="pauseVideos()">⏸️ Pause</button>
+    <button onclick="resetVideos()">⏮️ Reset</button>
+    <button id="fullscreenBtn">⛶ Pantalla Completa</button>
+  </div>
+
+  <video id="audio-video" src="http://localhost:8080/videos/video.mp4" crossorigin="anonymous" loop hidden></video>
+</main>
+{% endblock %}
