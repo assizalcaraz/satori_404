@@ -151,6 +151,17 @@
   <canvas id="source" style="display: none; margin-top: 1rem; border: 1px solid var(--text-color); background-color: rgba(255, 255, 255, 0.02);"></canvas>
   <pre id="ascii"></pre>
 
+  <!-- Control buttons -->
+  <div style="margin-top: 1rem;">
+    <button onclick="playVideos()">▶️ Play</button>
+    <button onclick="pauseVideos()">⏸️ Pause</button>
+    <button onclick="resetVideos()">⏮️ Reset</button>
+  </div>
+
+<!-- Audio-only video -->
+<video id="audio-video" src="http://localhost:8080/videos/video.mp4" crossorigin="anonymous" autoplay loop hidden></video>
+
+
   <script>
     const video = document.createElement('video');
     video.src = "http://localhost:8080/videos/video.mp4";
@@ -218,6 +229,36 @@
     video.addEventListener('play', () => {
       requestAnimationFrame(renderFrameToAscii);
     });
+
+    const audioVideo = document.getElementById('audio-video');
+
+    function playVideos() {
+      video.play();
+      audioVideo.play();
+    }
+
+    function pauseVideos() {
+      video.pause();
+      audioVideo.pause();
+    }
+
+    function resetVideos() {
+      video.currentTime = 0;
+      audioVideo.currentTime = 0;
+      playVideos();
+    }
+
+    // Asegura que ambos videos estén sincronizados al inicio
+    video.addEventListener("loadedmetadata", () => {
+      audioVideo.currentTime = video.currentTime;
+    });
+
+    // Intentar desbloquear audio al primer click/tap
+    document.body.addEventListener("click", () => {
+      audioVideo.muted = false;
+      audioVideo.play();
+      video.play();
+    }, { once: true });
   </script>
   
 </body>

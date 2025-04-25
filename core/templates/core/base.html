@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}SATORI.404{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+  <nav>
+    <header>
+        <h1 class="glitch-title">satori 404</h1>
+    </header>
+    <a href="/manifesto/">Manifiesto</a>
+    <a href="/sistema/">Sistema</a>
+    <a href="/experimentacion/">Experimentación</a>
+    <a href="/instalacion/">Instalación</a>
+    <a href="/documentacion/">Documentación</a>
+  </nav>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <p class="footer-quote">El código puede fallar. La iluminación, también. Pero ambos dejan rastro.</p>
+    <p class="footer-meta">&copy; 2025 – SATORI.404</p>
+  </footer>
+</body>
+</html>
