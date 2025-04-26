@@ -1,42 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Satori404</title>
-  <style>
-    body {
-      background: #000;
-      color: #0f0;
-      font-family: 'Courier New', monospace;
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-    }
+{% extends "core/base.html" %}
+{% load static %}
 
-    .typewriter {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      font-size: 1.2em;
-      max-width: 80vw;
-      white-space: nowrap;
-      overflow: hidden;
-      border-right: .15em solid #0f0;
-      animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
-    }
+{% block title %}Manifiesto Satori.404{% endblock %}
 
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/manifesto.css' %}">
+  <script defer src="{% static 'js/manifesto.js' %}"></script>
+{% endblock %}
 
-    @keyframes blink-caret {
-      0%, 100% { border-color: transparent }
-      50% { border-color: #0f0; }
-    }
-  </style>
-</head>
-<body>
-  <div class="typewriter">{{ koan }}</div>
-</body>
-</html>
+{% block content %}
+<canvas id="backgroundCanvas"></canvas>
+
+<main class="manifesto-container">  
+  <div id="manifesto-content">
+    
+
+    <p>Este manifiesto es una nota de desarrollo.  
+    Una cristalización momentánea en el flujo de una idea que no se termina nunca.</p>
+
+    <h3>¿Qué es Satori.404?</h3>
+    <p>Un espacio donde se experimenta con inteligencia artificial autónoma, estética generativa, narrativas descentralizadas, soberanía tecnológica y comunidad como motor.</p>
+
+    <h3>¿Qué construye?</h3>
+    <p>Una infraestructura cultural crítica capaz de leer la historia tecnológica desde el sur, producir software como obra y herramienta, y pensar sistemas distribuidos donde el código sea también ética.</p>
+
+    <h3>Cosmovisión</h3>
+    <ul>
+      <li><strong>Anarquismo constructivo:</strong> autonomía y apoyo mutuo como ejes.</li>
+      <li><strong>Cibernética crítica:</strong> diseñar para lo inesperado, no para el control total.</li>
+      <li><strong>Budismo tecnológico:</strong> Satori como despertar en medio del glitch.</li>
+      <li><strong>Peronismo filosófico:</strong> la comunidad organizada como sostén de todo lo demás.</li>
+      <li><strong>Epistemologías del sur:</strong> conocimiento situado, descentralizado, insurgente.</li>
+    </ul>
+  </div>
+</main>
+{% endblock %}
+  

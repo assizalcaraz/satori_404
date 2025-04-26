@@ -18,17 +18,17 @@
     </div>
 
     <div id="controls-column">
-      <div style="display: none;" class="control">
+      <div class="control" style="display: none;">
         <label>Ancho</label>
         <input id="widthSlider" type="range" min="50" max="200" value="100">
         <label class="random-check"><input type="checkbox" id="widthRandom"> random</label>
       </div>
-      <div class="control">
+      <div style="display: none;" class="control">
         <label>Escala Y</label>
         <input id="scaleYSlider" type="range" min="0.3" max="1" step="0.05" value="0.55">
         <label class="random-check"><input type="checkbox" id="scaleYRandom"> random</label>
       </div>
-      <div style="display: none;" class="control">
+      <div class="control">
         <label>Fuente</label>
         <input id="fontSizeSlider" type="range" min="6" max="16" value="9">
         <label class="random-check"><input type="checkbox" id="fontSizeRandom"> random</label>
@@ -51,7 +51,7 @@
       <div class="control">
         <label>Charset</label>
         <select id="charsetSelect">
-          <option value=" .:-=+*#%@">Minimal</option>
+          <option value=" .:-=+*#@%">Minimal</option>
           <option value="@#W$9876543210?!abc;:+=-,._ ">Clásico</option>
           <option value="$@B%8&WM#*oahkbdpqwmZO0QL">Denso</option>
           <option value="0123456789">Numérico</option>
@@ -60,18 +60,20 @@
       </div>
       <div class="control"><label>Invertir</label><input id="invertCheckbox" type="checkbox"></div>
       <div class="control"><label>Sombra</label><input id="shadowCheckbox" type="checkbox"></div>
+
+      <!-- Botones de control -->
+      <div class="buttons">
+        <button onclick="playVideos()">Play</button>
+        <button onclick="pauseVideos()">Pause</button>
+        <button onclick="resetVideos()">Reset</button>
+        <button id="fullscreenBtn">⛶ Pantalla Completa</button>
+        <button onclick="useWebcam()">📷 Webcam</button>
+
+      </div>
     </div>
   </div>
 
   <canvas id="source" style="display: none;"></canvas>
-
-  <div class="buttons">
-    <button onclick="playVideos()">▶️ Play</button>
-    <button onclick="pauseVideos()">⏸️ Pause</button>
-    <button onclick="resetVideos()">⏮️ Reset</button>
-    <button id="fullscreenBtn">⛶ Pantalla Completa</button>
-  </div>
-
   <video id="audio-video" src="http://localhost:8080/videos/video.mp4" crossorigin="anonymous" loop hidden></video>
 </main>
 {% endblock %}

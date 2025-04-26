@@ -117,6 +117,47 @@ function resetVideos() {
     playVideos();
 }
 
+window.useWebcam = function () {
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+        .then(stream => {
+            // Detener el video de fondo (audio-video)
+            audioVideo.pause();
+            audioVideo.muted = true;
+            audioVideo.src = ""; // Opcional: limpia la fuente para asegurar silencio total
+
+            // Si ya había un stream previo en 'video', detenerlo
+            if (video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+            }
+
+            // Asignar la cámara como nueva fuente de video
+            video.srcObject = stream;
+            video.play();
+        })
+        .catch(err => {
+            alert("No se pudo acceder a la webcam: " + err.message);
+            console.error("Webcam error:", err);
+        });
+};
+
+
+function useWebcam() {
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+        .then(stream => {
+            if (video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop()); // detiene anterior
+            }
+            video.srcObject = stream;
+            video.play();
+            audioVideo.pause(); // pausa el audio porque no se necesita
+        })
+        .catch(err => {
+            alert("No se pudo acceder a la webcam: " + err.message);
+            console.error("Webcam error:", err);
+        });
+}
+
+
 document.getElementById('fullscreenBtn')?.addEventListener('click', () => {
     if (ascii.requestFullscreen) {
         ascii.requestFullscreen();

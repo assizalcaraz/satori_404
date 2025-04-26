@@ -1,3 +1,88 @@
+/* Estilo global para todos los sliders */
+input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 95%;
+    height: 6px;
+    background: #545454; /* fondo del riel */
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.0s;
+    padding: 2px;
+    margin: px;
+  }
+  
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #3c3a3b; /* bolita roja glitch */
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 5px #772727;
+    transition: background 0.30s, box-shadow 0.3s;
+  }
+  
+  input[type=range]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #ff0055;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 5px #ff0055;
+  }
+  
+  input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background-color: #3c3a3b; /* mismo fondo oscuro que el slider */
+    border: 2px solid #545454; /* borde gris oscuro, no rojo todavía */
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+  
+  input[type="checkbox"]:checked {
+    background-color: #5a1f1f; /* rojo muy oscuro, más elegante */
+    border-color: #772727; /* rojo apagado */
+    box-shadow: 0 0 3px #772727; /* glow apenas perceptible */
+  }
+  
+  input[type="checkbox"]:focus {
+    outline: none;
+  }
+
+  button {
+    background-color: #000;
+    color: #eee;
+    border: 1px solid #555;
+    padding: 6px 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+  }
+  
+  button:hover {
+    border-color: #772727;
+    color: #f66;
+    box-shadow: 0 0 5px #77272780;
+  }
+  
+  
+
+
+
+
 @keyframes glitchText {
     0% {
       text-shadow: 2px 2px #ff0055, -2px -2px #00ffee;
@@ -143,3 +228,6 @@
     justify-content: center;
   }
   
+
+
+
