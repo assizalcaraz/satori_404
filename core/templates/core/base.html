@@ -12,22 +12,28 @@
 <body>
 
   <nav>
-    <header>
+    <div class="logo">
+      <a href="/">
         <h1 class="glitch-title">satori 404</h1>
-    </header>
-    <a href="/manifesto/">Manifiesto</a>
-    <a href="/sistema/">Sistema</a>
-    <a href="/experimentacion/">Experimentación</a>
-    <a href="/instalacion/">Instalación</a>
-    <a href="/documentacion/">Documentación</a>
+      </a>
+    </div>
+    <div class="nav-links">
+      <a href="/manifesto/">Manifiesto</a>
+      <a href="/framework/">Framework</a>
+      <a href="/experimentacion/">Experimentación</a>
+      <a href="/instalacion/">Instalación</a>
+      <a href="/documentacion/">Documentación</a>
+    </div>
   </nav>
-
+  
+  
+  
   <main>
     {% block content %}{% endblock %}
   </main>
 
   <footer>
-    <p class="footer-quote">El código puede fallar. La iluminación, también. Pero ambos dejan rastro.</p>
+    <p class="footer-quote"></p>
     <p class="footer-meta">&copy; 2025 – SATORI.404</p>
   </footer>
 </body>
