@@ -5,3 +5,14 @@ packaging==24.2
 python-decouple==3.8
 sqlparse==0.5.3
 pillow
+
+#AGENTES
+onnxruntime>=1.16.0
+sentence-transformers>=2.2.2
+httpx>=0.24.0
+
+chromadb==0.4.22  # (o el que estés usando)
+langchain>=0.1.0
+langchain-community>=0.0.20
+hf_xet
+numpy==1.26.4

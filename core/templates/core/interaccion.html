@@ -1,0 +1,26 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Interacción de Agentes{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/interaccion.css' %}">
+<script defer src="{% static 'js/interaccion.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<main class="interaccion-container">
+  <div id="totems">
+    <div class="totem" id="agente-1">
+      <h2>Arquitecto</h2>
+      <div class="mensajes" id="mensajes-arquitecto"></div>
+    </div>
+    <div class="totem" id="agente-2">
+      <h2>Asistente</h2>
+      <div class="mensajes" id="mensajes-asistente"></div>
+    </div>
+  </div>
+
+  <canvas id="backgroundCanvas"></canvas>
+</main>
+{% endblock %}

@@ -3,6 +3,9 @@ services:
     build: .
     volumes:
       - ./static:/app/static
+      - ~/.chroma_model:/root/.cache/chroma/onnx_models/all-MiniLM-L6-v2
+
+
     expose:
       - "8000"
 

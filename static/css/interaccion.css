@@ -1,0 +1,45 @@
+.interaccion-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+  }
+  
+  #totems {
+    display: flex;
+    justify-content: space-around;
+    padding: 2rem;
+    gap: 2rem;
+  }
+  
+  .totem {
+    width: 45%;
+    background: rgba(20, 20, 20, 0.7);
+    padding: 1rem;
+    border: 1px solid #444;
+    border-radius: 8px;
+    overflow-y: auto;
+    max-height: 70vh;
+  }
+  
+  .totem h2 {
+    text-align: center;
+    color: #f66;
+  }
+  
+  .mensajes {
+    margin-top: 1rem;
+    font-family: 'Courier New', monospace;
+    color: #ccc;
+  }
+  
+  #backgroundCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+  }
+  

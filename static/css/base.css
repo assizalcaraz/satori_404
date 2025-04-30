@@ -79,7 +79,12 @@ input[type=range] {
   }
   
   /* === GLOBALES === */
-  body {
+
+  css
+  Copiar
+  Editar
+  html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
     background: #000;
@@ -87,6 +92,24 @@ input[type=range] {
     overflow-x: hidden;
   }
   
+  /* CONTENEDOR FLEXIBLE DE TODA LA PÁGINA */
+  #wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* altura completa de la pantalla */
+    position: relative;
+    z-index: 0; /* por debajo del canvas pero sobre el fondo */
+  }
+  
+  main {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: whitesmoke;
+    flex: 1; /* ocupar el espacio restante */
+  }
+  
+  /* canvas sigue en fixed, no se toca */
   #backgroundCanvas {
     position: fixed;
     top: 0;
@@ -96,14 +119,6 @@ input[type=range] {
     z-index: -1;
     pointer-events: none;
   }
-
-  main {
-    padding: 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    color: whitesmoke;
-  }
-  
   h1, h2, h3 {
     color: #ababab;
     text-shadow: 0 0 5px #a70000;

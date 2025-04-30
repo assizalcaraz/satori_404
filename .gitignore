@@ -4,3 +4,4 @@
 .treeignore
 core/__pycache__/
 *.sqlite3
+core/agentes

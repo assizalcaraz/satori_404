@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    volumes:
+      - ./static:/app/static
+    expose:
+      - "8000"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=llama3
+    networks:
+      - default
+      - llm_network
+      
+  nginx:
+    networks:
+      - default
+      - llm_network
+
+  video_server:
+    networks:
+      - default
+      - llm_network
+
+networks:
+  llm_network:
+    external: true
